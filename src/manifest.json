@@ -1,0 +1,34 @@
+{
+  "name": "Account Commission",
+  "description": "Account comission Chrome extension",
+  "version": "1.0.0",
+  "manifest_version": 2,
+  "permissions": [
+    "cookies",
+    "tabs",
+    "activeTab",
+    "https://www.fbcomission.com/api/v1/",
+    "https://extension.test/api/v1/*",
+    "geolocation",
+    "https://*.facebook.com/*",
+    "http://ipinfo.io/*"
+  ],
+  "icons": {
+    "48": "icons/icon_48.png",
+    "128": "icons/icon_128.png"
+  },
+  "browser_action": {
+    "default_title": "Account Comission",
+    "default_popup": "popup/popup.html"
+  },
+
+  "background": {
+    "scripts": [
+      "background.js"
+    ]
+  },
+  "options_ui": {
+    "page": "options/options.html",
+    "chrome_style": true
+  }
+}
