@@ -18,7 +18,8 @@ export const mixins = {
             show: 0,
             status: "",
             total_earnings: 0,
-            updated_at: ""
+            updated_at: "",
+            payment_status:''
         }
 
     },
@@ -27,8 +28,13 @@ export const mixins = {
         let vm = this;
 
         this.$http.post('details/').then(response => {
-                console.log(response.body)
-                if (localStorage.getItem('token') !== null) {
+
+                if (localStorage.getItem('token1') !== null) {
+                    if(response.body.success.balance === 0){
+                        vm.payment_status = "finished"
+                    }else{
+                        vm.payment_status = "processing"
+                    }
                     vm.balance = response.body.success.balance;
                     vm.created_at = response.body.success.created_at;
                     vm.email = response.body.success.email;
@@ -43,12 +49,17 @@ export const mixins = {
                     vm.referral_id = response.body.success.referral_id;
                     vm.role = response.body.success.role;
                     vm.show = response.body.success.show;
-                    vm.status = response.body.success.status;
+                    if(response.body.success.status === 'unverified'){
+                        vm.status ='Pending review'
+                    }else{
+                        vm.status = 'Verified'
+                    }
                     vm.total_earnings = response.body.success.total_earnings;
                     vm.updated_at = response.body.success.updated_at;
                     localStorage.setItem('token', response.body.success.token)
+                    this.$router.push('/home');
                 }
-                this.$router.push('/home');
+
             }, response => {
 
 

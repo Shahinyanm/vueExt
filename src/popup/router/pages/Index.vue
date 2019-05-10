@@ -1,7 +1,7 @@
 <template>
     <div id="main-container">
         <div class="col-12 text-center ">
-            <img id="logo" src="img/logo.png">
+            <img id="logo" src="../../../assets/img/logo.png">
         </div>
         <div class="alert alert-warning"><strong data-v-1a7c3660=""> Please LoginYour to receive updates and
             notifications about your account!</strong></div>
@@ -130,7 +130,7 @@
                 let vm = this;
                 this.$http.post('register/', this.form).then(response => {
 
-                        localStorage.setItem('token', response.body.success.token)
+                        localStorage.setItem('token1', response.body.success.token)
                         this.$router.push('home');
                         console.log(response);
                     }, response => {

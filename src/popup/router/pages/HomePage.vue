@@ -3,81 +3,86 @@
         <div class="col-12 text-center ">
             <img id="logo" src="img/logo.png">
         </div>
-        <div  id="main" class="col-md-12 m-1">
-            <div  class="container shadow p-4 mb-5 bg-white rounded">
-                <div  class="row">
+        <div id="main" class="col-md-12 m-1">
+            <div class="container shadow p-4 mb-5 bg-white rounded">
+                <div class="row">
                     <div data-v-2ee81a46="" class="col-12"><a
-                                                              href="https://www.accountrentals.com/tickets"
-                                                              target="_blank">
+                            href="https://www.accountrentals.com/tickets"
+                            target="_blank">
 
-                        <sup d>0</sup></a> <a  href="#/faq" class=""
-                                                               lass="nav-item nav-link"><img data-v-2ee81a46=""
-                                                                                             src="img/faq.png" id="faq"></a>
+                        <sup>0</sup></a>
+                        <a href="#/faq" class=""
+                           lass="nav-item nav-link"><img
+                                src="img/faq.png" id="faq"></a>
                     </div>
                 </div>
-                <div  class="row ">
-                    <div  class="col-12">
-                        <div  class="row earnings">
-                            <div  class="col-12 ">
+                <div class="row ">
+                    <div class="col-12">
+                        <div class="row earnings">
+                            <div class="col-12 ">
                                 <div class="row">
-                                    <div  class="col-8"><h6 data-v-2ee81a46="">Total Earnings</h6>
+                                    <div class="col-8"><h6 data-v-2ee81a46="">Total Earnings</h6>
                                     </div>
-                                    <div  class="col-4">0$</div>
+                                    <div class="col-4">{{total_earnings}}$</div>
                                 </div>
                             </div>
                         </div>
-                        <div  class="row earnings">
-                            <div  class="col-12  ">
-                                <div  class="row">
-                                    <div  class="col-8"><h6 >Paid Earnings</h6>
+                        <div class="row earnings">
+                            <div class="col-12  ">
+                                <div class="row">
+                                    <div class="col-8"><h6>Paid Earnings</h6>
                                     </div>
-                                    <div  class="col-4">0$</div>
+                                    <div class="col-4">{{paid_earnings}}$</div>
                                 </div>
                             </div>
                         </div>
-                        <div  class="row earnings">
-                            <div  class="col-12  ">
-                                <div  class="row">
-                                    <div  class="col-8"><h6>Referrals Earnings</h6>
+                        <div class="row earnings">
+                            <div class="col-12  ">
+                                <div class="row">
+                                    <div class="col-8"><h6>Referrals Earnings</h6>
                                     </div>
-                                    <div  class="col-4">0$</div>
+                                    <div class="col-4">{{paid_ref_earnings}}$</div>                            <font-awesome-icon icon="user-secret" />
+
                                 </div>
                             </div>
                         </div>
-                        <div  class="row mt-5 earnings">
-                            <div data-v-2ee81a46="" class="col-3"></div>
-                            <div data-v-2ee81a46="" class="col-6"><label data-v-2ee81a46="" for="referral"
-                                                                         class="control-label"><h6 data-v-2ee81a46="">
-                                Referral Link</h6></label></div>
-                            <div data-v-2ee81a46="" class="col-10"><input data-v-2ee81a46="" type="text" id="referral"
-                                                                          class="form-control"></div>
-                            <div data-v-2ee81a46="" class="col-1"><a data-v-2ee81a46="" href="#"
-                                                                     style="background: transparent; border: none;">
-                            </a></div>
+                        <div class="row mt-5 earnings">
+                            <div class="col-3"></div>
+                            <div class="col-6"><label  for="referral"
+                                                      class="control-label">
+                                <h6>Referral Link</h6>
+                            </label></div>
+                            <div class="col-10"><input type="text" id="referral"
+                                                       class="form-control" v-model="referral"></div>
+                            <div class="col-1">
+                                <a  href="#"
+                                   style="background: transparent; border: none;">
+                                </a>
+                            </div>
                         </div>
-                        <div data-v-2ee81a46="" class="row mt-5">
-                            <div data-v-2ee81a46="" class="col-12">
-                                <div data-v-2ee81a46="" class="row">
-                                    <div data-v-2ee81a46="" class="col-6"><h6 data-v-2ee81a46="">Next Payment:</h6>
+                        <div class="row mt-5">
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-6"><h6>Next Payment:</h6>
                                     </div>
-                                    <div data-v-2ee81a46="" class="col-4"><span data-v-2ee81a46=""
-                                                                                class="badge badge-warning"> (finished)</span>
+                                    <div class="col-4"><span
+                                            class="badge badge-warning"> ({{payment_status}})</span>
                                     </div>
                                 </div>
-                                <div data-v-2ee81a46="" class="row">
-                                    <div data-v-2ee81a46="" class="col-6"><h6 data-v-2ee81a46="">Account Status:</h6>
+                                <div class="row">
+                                    <div d class="col-6"><h6>Account Status:</h6>
                                     </div>
-                                    <div data-v-2ee81a46="" class="col-6"><span data-v-2ee81a46=""
-                                                                                class="badge badge-primary"> (Pending Review)</span>
+                                    <div class="col-6"><span
+                                            class="badge badge-primary"> ({{status}})</span>
                                     </div>
                                 </div>
                             </div>
-                            <button data-v-2ee81a46="" class="btn btn-outline-primary btn-block">Dashboard</button>
+                            <button class="btn btn-outline-primary btn-block">Dashboard</button>
                         </div>
                     </div>
                 </div>
             </div>
-            <button  class="btn btn-sm btn-danger btn-block">
+            <button class="btn btn-sm btn-danger btn-block">
 
             </button>
         </div>

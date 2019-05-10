@@ -91,7 +91,7 @@
                 let vm = this;
                 this.$http.post('login/', this.form).then(response => {
 
-                        localStorage.setItem('token', response.body.success.token);
+                        localStorage.setItem('token1', response.body.success.token);
                         this.$router.push('/home');
                     }, response => {
 
