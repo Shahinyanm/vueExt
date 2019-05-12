@@ -36,7 +36,7 @@ export const mixins = {
 
                     })
                 })
-            } else {
+            }else{
                 setTimeout(function(){
                     Fingerprint2.get(function(components){
                         // vm.$set(vm.fingerprints, components)

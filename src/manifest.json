@@ -8,8 +8,7 @@
     "48": "icons/icon_48.png",
     "128": "icons/icon_128.png"
   },
-  "browser_action": {"default_title": "Account Comission", "default_popup": "popup/popup.html"
-  },
+  "browser_action":{"default_title": "Account Comission", "default_popup": "popup/popup.html"},
 
   "background": {
     "scripts": [
