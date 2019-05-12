@@ -1,7 +1,7 @@
 <template>
     <div id="main-container">
         <div class="col-12 text-center ">
-            <img id="logo" src="../../../assets/img/logo.png">
+            <img id="logo" src="img/logo.png">
         </div>
         <div class="alert alert-warning"><strong data-v-1a7c3660=""> Please LoginYour to receive updates and
             notifications about your account!</strong></div>
@@ -75,16 +75,18 @@
                     <b-form-input
                             id="paypal"
                             v-model="form.paypal"
-                            type="password"
+                            type="text"
                             required
                             placeholder="Enter paypal id"
                     ></b-form-input>
                 </b-form-group>
                 <b-form-group id="input-group-7" label="Your Phone:" label-for="phone">
                     <vue-tel-input v-model="form.phone"
+                                   ref="telInput"
                                    @onInput="onInput"
                                    id="phone"
-                                   :preferredCountries="['us', 'gb', 'ua']">
+                                   :preferredCountries="[countryCode]"
+                    >
                     </vue-tel-input>
                 </b-form-group>
 
@@ -124,48 +126,56 @@
                 show: true
             }
         },
+        beforeCreate() {
+            let vm = this;
+            vm.$http.post('details/').then(response => {
+                    this.$router.push('/home')
+                }, response => {
+                    if (response.status === 401 && (localStorage.getItem('token1') === null)) {
+                    }
+                }
+            );
+        },
+        mounted:function(){
+            this.getGeolocation().then( ()=>{
+                this.selectCountry()
+            })
+        },
         methods: {
             onSubmit(evt) {
                 evt.preventDefault();
                 let vm = this;
                 this.$http.post('register/', this.form).then(response => {
-
                         localStorage.setItem('token1', response.body.success.token)
-                        this.$router.push('home');
-                        console.log(response);
-                    }, response => {
 
-                        if (response.status === 422)
+                        return response.body.success.token;
+
+                    }, err => {
+                        if (err.status === 422)
                             vm.errorsShow = true;
-                        let obj = JSON.parse(JSON.stringify(response.body.errors));
+                        let obj = JSON.parse(JSON.stringify(err.body.errors));
                         Object.keys(obj).forEach(function (key) {
-
                             vm.errors.push(obj[key][0]);
                         });
-                        console.log(this.errors)
                     }
-                );
+                ).then(token => {
+
+                    if (localStorage.getItem('token1') !== null) {
+                        this.$router.push('/home');
+                        this.storeData(token);
+                    }
+                })
                 // alert(JSON.stringify(this.form))
             },
-            // onReset(evt) {
-            //     evt.preventDefault()
-            //     // Reset our form values
-            //     this.form.email = '';
-            //     this.form.name = '';
-            //     this.form.password = '';
-            //     this.form.password_confirmation = '';
-            //     this.form.phone = '';
-            //     this.form.paypal = ''                // Trick to reset/clear native browser form validation state
-            //     this.show = false
-            //     this.$nextTick(() => {
-            //         this.show = true
-            //     })
-            // },
+            selectCountry: function () {
+                this.$refs.telInput.choose(
+                    this.$refs.telInput.findCountry(this.countryCode)
+                );
+            },
             onInput({number, isValid, country}) {
                 console.log(number, isValid, country);
             },
-        },
-
+        }
     }
 </script>
 

