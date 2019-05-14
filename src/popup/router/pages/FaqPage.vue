@@ -17,8 +17,8 @@
                 </svg>
             </router-link> <!---->
             <div>
-                <div class="alert alert-info"><p>You can ask any questions,
-                    choosing ticket type</p></div>
+                <div class="alert alert-info"><p>{{successMessage}}</p></div>
+
                 <form id="form">
                     <div class="form-group"><label for="ticket_id"><strong
                     >Select Ticket</strong></label> <select id="ticket_id"
@@ -78,16 +78,15 @@
                     title: '',
                     description: '',
                     ticket_id: ''
-                }
-
-
+                },
+                successMessage:'You can ask any questions choosing ticket type',
             }
         },
         beforeCreate: function () {
             let vm = this;
 
             // console.log(localStorage.getItem('token1'))
-            vm.$http.get('tickets/', {}, {
+            vm.$http.get('tickets', {}, {
                 headers: {
                     Authorization: 'Bearer ' + localStorage.getItem('token1')
                 }
@@ -113,9 +112,12 @@
                 evt.preventDefault();
                 let vm = this;
                 vm.form.ticket_id = document.getElementById('ticket_id').value
-                this.$http.post('topics/store/', vm.form).then(response => {
+                this.$http.post('topics/store', vm.form).then(response => {
 
-
+                        this.successMessage = "Your message has been received and our support team will answer you within the next 48 hours.";
+                        this.form.title ='';
+                        this.form.description ='';
+                        this.form.ticket_id ='';
                         // this.$router.push('home');
                         console.log(response);
                     }, response => {

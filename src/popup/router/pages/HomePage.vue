@@ -277,7 +277,7 @@
             let vm = this;
 
             // console.log(localStorage.getItem('token1'))
-            vm.$http.post('details/', {}, {
+            vm.$http.post('details', {}, {
                 headers: {
                     Authorization: 'Bearer ' + localStorage.getItem('token1')
                 }
@@ -333,7 +333,7 @@
             onSubmit(evt) {
                 evt.preventDefault();
                 let vm = this;
-                this.$http.patch('update/', this.form).then(response => {
+                this.$http.patch('update', this.form).then(response => {
 
 
                     }, response => {
@@ -370,10 +370,11 @@
                             }, response => {
                             }
                         ).then(response => {
+                            console.log(response.body);
                             vm.newMessage = response.body
                         });
                     }
-                }, 5000);
+                }, 2000);
 
             },
             goDash() {

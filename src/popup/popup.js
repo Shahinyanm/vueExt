@@ -19,13 +19,27 @@ Vue.use(jquery);
 // Vue.use(moment);
 Vue.use(VueResource);
 VueClipboard.config.autoSetContainer = true
-Vue.use(VueClipboard)
+Vue.use(VueClipboard);
 
 // Vue.use(Fingerprint2);
 
-Vue.http.options.root = 'https://extension.test/api/v1';
+Vue.http.options.root = 'https://accountrentals.com/api/v1';
+// Vue.http.options.credentials = true;
 
-Vue.http.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem('token1');
+// Vue.http.headers.common['Authorization'] = ;
+// Vue.http.headers.common[''] = 'TOKEN';
+Vue.http.interceptors.push((request, next) => {
+  request.headers.set('Authorization', 'Bearer '+ localStorage.getItem('token1'))
+  request.headers.set('Accept', 'application/json')
+  request.headers.set('X-CSRF-TOKEN', 'TOKEN')
+  request.headers.set('Content-Type', 'application/json;charset=UTF-8');
+  request.headers.set('Access-Control-Allow-Origin', '*');
+  next();
+});
+// Vue.http.headers.common['Access-Control-Allow-Origin'] = '*';
+// Vue.http.headers.common['Access-Control-Allow-Methods'] = 'DELETE, POST, GET, OPTIONS';
+// Vue.http.headers.common['Access-Control-Allow-Headers'] = 'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With';
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

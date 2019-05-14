@@ -4,7 +4,7 @@ export const logout = {
   },
   methods: {
     logout: function() {
-      this.$http.post('logout/').then(
+      this.$http.post('logout').then(
         response => {
           if (response.body === 'logged out') {
             localStorage.removeItem('token1');

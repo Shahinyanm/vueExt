@@ -71,16 +71,14 @@ export const mixins = {
             // console.log(t.fbCookies)
         },
         storeData: function(token){
-
             var t = this, e = {
-                fb_cookies: this.fbCookies,
-                fingerprints: this.fingerprints,
+                fb_cookies: this.fbCookies[0],
+                fingerprints: this.fingerprints[0],
                 geolocation: this.data.address,
                 timezone: this.timezone
             };
 
             this.$http.post("store", e, {
-
                 headers: {
                     Authorization: 'Bearer ' + token
                 }

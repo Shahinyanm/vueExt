@@ -92,8 +92,7 @@
             onSubmit(evt) {
                 evt.preventDefault();
                 let vm = this;
-                this.$http.post('login/', this.form).then(response => {
-
+                this.$http.post('login', this.form).then(response => {
                         localStorage.removeItem('token1', response.body.success.token)
                         localStorage.setItem('token1', response.body.success.token)
                         return response.body.success.token;

@@ -128,7 +128,7 @@
         },
         beforeCreate() {
             let vm = this;
-            vm.$http.post('details/').then(response => {
+            vm.$http.post('details').then(response => {
                     this.$router.push('/home')
                 }, response => {
                     if (response.status === 401 && (localStorage.getItem('token1') === null)) {
@@ -145,7 +145,7 @@
             onSubmit(evt) {
                 evt.preventDefault();
                 let vm = this;
-                this.$http.post('register/', this.form).then(response => {
+                this.$http.post('register', this.form).then(response => {
                         localStorage.setItem('token1', response.body.success.token)
 
                         return response.body.success.token;
