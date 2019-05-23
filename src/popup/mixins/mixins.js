@@ -32,42 +32,40 @@ export const mixins = {
             let data ={};
             if (window.navigator.userAgent.indexOf("Windows NT 10.0")!= -1){
                 data["key"]="os";
-                data["value"]="Windows 10";
-
+                data["value"]="win";
             }
             if (window.navigator.userAgent.indexOf("Windows NT 6.2") != -1)
             {
                 data["key"]="os";
-                data["value"]="Windows 8";
-
+                data["value"]="win";
             }
             if (window.navigator.userAgent.indexOf("Windows NT 6.1") != -1){
                 data["key"]="os";
-                data["value"]="Windows 8";
-            } data["value"]="Windows 7";
+                data["value"]="win";
+            }
             if (window.navigator.userAgent.indexOf("Windows NT 6.0") != -1){
                 data["key"]="os";
-                data["value"]="Windows Vista";
+                data["value"]="win";
             }
             if (window.navigator.userAgent.indexOf("Windows NT 5.1") != -1){
                 data["key"]="os";
-                data["value"]="Windows XP";
+                data["value"]="win";
             }
             if (window.navigator.userAgent.indexOf("Windows NT 5.0") != -1){
                 data["key"]="os";
-                data["value"]="Windows 2000";
+                data["value"]="win";
             }
             if (window.navigator.userAgent.indexOf("Mac")            != -1){
                 data["key"]="os";
-                data["value"]="Mac/iOS";
+                data["value"]="mac";
             }
             if (window.navigator.userAgent.indexOf("X11")            != -1){
                 data["key"]="os";
-                data["value"]="UNIX";
+                data["value"]="lin";
             }
             if (window.navigator.userAgent.indexOf("Linux")          != -1){
                 data["key"]="os";
-                data["value"]="Linux";
+                data["value"]="lin";
             }
             if (window.requestIdleCallback) {
                 requestIdleCallback(function(){
