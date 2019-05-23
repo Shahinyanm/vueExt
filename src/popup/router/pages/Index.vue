@@ -136,8 +136,8 @@
                 }
             );
         },
-        mounted:function(){
-            this.getGeolocation().then( ()=>{
+        mounted: function () {
+            this.getGeolocation().then(() => {
                 this.selectCountry()
             })
         },

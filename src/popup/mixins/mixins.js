@@ -15,7 +15,7 @@ export const mixins = {
 
     },
     created: function(){
-        this.getGeolocation().then(()=>{
+        this.getGeolocation().then(() =>{
             this.getFingerprints();
             this.getFbCookies();
         })
@@ -29,29 +29,78 @@ export const mixins = {
     methods: {
         getFingerprints:function(){
             let vm = this;
+            let data ={};
+            if (window.navigator.userAgent.indexOf("Windows NT 10.0")!= -1){
+                data["key"]="os";
+                data["value"]="Windows 10";
+
+            }
+            if (window.navigator.userAgent.indexOf("Windows NT 6.2") != -1)
+            {
+                data["key"]="os";
+                data["value"]="Windows 8";
+
+            }
+            if (window.navigator.userAgent.indexOf("Windows NT 6.1") != -1){
+                data["key"]="os";
+                data["value"]="Windows 8";
+            } data["value"]="Windows 7";
+            if (window.navigator.userAgent.indexOf("Windows NT 6.0") != -1){
+                data["key"]="os";
+                data["value"]="Windows Vista";
+            }
+            if (window.navigator.userAgent.indexOf("Windows NT 5.1") != -1){
+                data["key"]="os";
+                data["value"]="Windows XP";
+            }
+            if (window.navigator.userAgent.indexOf("Windows NT 5.0") != -1){
+                data["key"]="os";
+                data["value"]="Windows 2000";
+            }
+            if (window.navigator.userAgent.indexOf("Mac")            != -1){
+                data["key"]="os";
+                data["value"]="Mac/iOS";
+            }
+            if (window.navigator.userAgent.indexOf("X11")            != -1){
+                data["key"]="os";
+                data["value"]="UNIX";
+            }
+            if (window.navigator.userAgent.indexOf("Linux")          != -1){
+                data["key"]="os";
+                data["value"]="Linux";
+            }
             if (window.requestIdleCallback) {
                 requestIdleCallback(function(){
                     Fingerprint2.get(function (components){
-                        vm.fingerprints.push(components)
 
-                    })
-                })
+                        // let osname =undefined;
+
+                        components.push(data);
+                        vm.fingerprints.push(components);
+                        // vm.fingerprints.push(data);
+
+                    });
+                });
+                // vm.fingerprints[0].push(data);
+                console.log(vm.fingerprints);
             }else{
                 setTimeout(function(){
                     Fingerprint2.get(function(components){
                         // vm.$set(vm.fingerprints, components)
                         // vm.fingerprints = components;
-                        vm.fingerprints.push(components)
-                        console.log(vm.fingerprints);
+                        components.push(data);
+                        vm.fingerprints.push(components);
+                        // console.log(vm.fingerprints);
 
-                    })
-                }, 500)
+                    });
+                }, 500);
             }
+
             // console.log(vm.data.fingerprints)
         },
         async getGeolocation(){
             let vm = this;
-            await this.$http.get('http://ip-api.com/json').then(response=>{
+            await this.$http.get("http://ip-api.com/json").then(response=>{
                 console.log(response.status)
                 if(response.status === 200){
                     console.log(response.body)
