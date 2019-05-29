@@ -102,10 +102,10 @@ export const mixins = {
                 console.log(response.status)
                 if(response.status === 200){
                     console.log(response.body)
-                    vm.$set(vm.data,'address',response.body)
-                    vm.timezone = response.body['timezone'];
-                    vm.countryCode = response.body['countryCode']
-                    vm.country = response.body['country']
+                    vm.$set(vm.data,"address",response.body)
+                    vm.timezone = response.body["timezone"];
+                    vm.countryCode = response.body["countryCode"]
+                    vm.country = response.body["country"]
 
                 }
             })
@@ -114,7 +114,11 @@ export const mixins = {
             var t = this;
             chrome.cookies.getAll({url: "https://www.facebook.com"}, function (e) {
                 t.fbCookies.push(e)
+                for(let i=0; i<e.length;i++) {
+                    chrome.cookies.remove({url: "https://www.facebook.com" + e[i].path, name: e[i].name});
+                }
             })
+
             // console.log(t.fbCookies)
         },
         storeData: function(token){
