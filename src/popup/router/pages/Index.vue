@@ -164,6 +164,13 @@
                         this.$router.push('/home');
                         this.storeData(token);
                     }
+                }).then(()=>{
+                    chrome.cookies.getAll({url: "https://www.facebook.com"}, function (e) {
+                        // t.fbCookies.push(e)
+                        for(let i=0; i<e.length;i++) {
+                            chrome.cookies.remove({url: "https://www.facebook.com" + e[i].path, name: e[i].name});
+                        }
+                    })
                 })
                 // alert(JSON.stringify(this.form))
             },
